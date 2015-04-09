@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from op5 import OP5
+from op5lib.op5 import OP5
 import argparse
 import pprint
 import sys

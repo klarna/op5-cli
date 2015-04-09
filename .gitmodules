@@ -1,0 +1,3 @@
+[submodule "op5lib"]
+	path = op5lib
+	url = ../op5lib.git

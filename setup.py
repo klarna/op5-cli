@@ -8,7 +8,7 @@ setup(
     version='0.1',
     author='Ozan Safi',
     author_email='ozansafi@gmail.com',
-    py_modules=['op5'],
+    packages = ['op5lib'],
     scripts=['op5-cli'],
     url='https://github.com/ozans/op5-cli',
     license='LICENSE.txt',
