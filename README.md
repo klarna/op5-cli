@@ -11,7 +11,7 @@ python setup.py install
 
 How to run
 ----------
- `$ op5-cli <action_type> <object_type> [<name>] [--data <data>]`
+ `$ op5-cli <action_type> <object_type> [<name>] [--data <data>] [--dryrun] [--debug]`
 
 The program will output (only) valid JSON data on success; making it easy for the output to be piped into external tools (e.g. JSON parsers like jq) to be processed further.
 
