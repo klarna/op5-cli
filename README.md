@@ -37,6 +37,19 @@ Examples
 
  `$ op5-cli overwrite service "<host_name>|<hostgroup_name>;<service_description>" --data "$(<example_data/passive_service_data)"`
 
+FAQ
+---
+
+- I get an "ImportError: No module named op5lib.op5" when I try to run the application
+
+You didn't fetch the submodule which contains the library.
+
+$ git submodule update --init
+
+- The app (or rather the library that the app uses) raises an exception on purpose sometimes and does not catch it, making the execution fail.
+
+Yeah, as you said, that is on purpose. That happens when OP5 has an internal error and it is better to fix that problem first than to let the execution continue.
+
 Contributing
 ------------
 Pull requests, bug reports, and feature requests are extremely welcome.
