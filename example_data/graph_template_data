@@ -1,0 +1,4 @@
+{
+"check": "check_ping",
+"graph_template": "default"
+}

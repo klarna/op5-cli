@@ -1,6 +1,6 @@
 {
-"host_name": "test-host",
-"service_description": "test-service",
+"host_name": "test-host2",
+"service_description": "test-service2",
 "check_period": "24x7",
 "freshness_threshold": "600",
 "max_check_attempts": "3",

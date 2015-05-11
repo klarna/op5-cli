@@ -1,0 +1,6 @@
+{
+"first_notification": "0",
+"host_name": "test-host",
+"last_notification": "60",
+"notification_interval": "60"
+}

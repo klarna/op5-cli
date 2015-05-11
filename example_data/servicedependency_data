@@ -1,0 +1,4 @@
+{
+"dependent_service": "test-host2;test-service2",
+"service": "test-host;test-service"
+}
