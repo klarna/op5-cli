@@ -1,5 +1,5 @@
 {
-"host_name": "test-host",
+"host_name": "test-host2",
 "address": "",
 "max_check_attempts": "3",
 "notification_interval": "0",

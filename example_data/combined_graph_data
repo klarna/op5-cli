@@ -1,0 +1,6 @@
+{
+"comment": "test-combined_graph",
+"services": [ {"host": "test-host"}, {"service": "test-service"} ],
+"title": "Test Combined Graph Title",
+"type": "Area"
+}

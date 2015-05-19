@@ -1,0 +1,6 @@
+{
+"description": "test-management_pack",
+"hostgroup": "test-hostgroup",
+"icon": "test-icon",
+"management_pack_name": "test-management_pack"
+}
