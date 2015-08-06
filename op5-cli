@@ -99,7 +99,7 @@ def read_config_file():
         print 'Unable to read config file.  YAML syntax issue, perhaps?'
         sys.exit(1)
 
-    required_params = ["op5_url","op5_username","op5_password"]
+    required_params = ["op5_url","op5_username"]
     if not set(required_params).issubset(config.keys()):
         print "Required parameters not set: %s\n" % set(required_params) - set(config.keys)
         sys.exit(1)
@@ -107,7 +107,7 @@ def read_config_file():
     return config
 
 def main():
-    config=read_config_file() 
+    config=read_config_file()
 
     parser = argparse.ArgumentParser(description='A command-line interface for the OP5 monitoring system using its REST API')
     subparsers = parser.add_subparsers()
@@ -153,6 +153,9 @@ def main():
 
     try:
         args, unknown = parser.parse_known_args()
+        if not "op5_password" in config.keys():
+          import getpass
+          config["op5_password"] = getpass.getpass("Enter password for user %s: " % config["op5_username"], stream = sys.stderr)
     except Exception as e:
         import pprint; pprint.pprint(e)
         return 1
