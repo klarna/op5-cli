@@ -9,6 +9,12 @@ import json
 import os
 import ast
 
+import getpass
+try:
+    import keyring
+except:
+    pass
+
 import logging
 logger = logging.getLogger("op5")
 logger.setLevel(logging.DEBUG)
@@ -154,8 +160,16 @@ def main():
     try:
         args, unknown = parser.parse_known_args()
         if not "op5_password" in config.keys():
-          import getpass
-          config["op5_password"] = getpass.getpass("Enter password for user %s: " % config["op5_username"], stream = sys.stderr)
+            if "keyring" in sys.modules:
+                password = keyring.get_password("op5-cli", config["op5_username"])
+                if password:
+                    config["op5_password"] = password
+                else:
+                    password = getpass.getpass("Enter password for user %s: " % config["op5_username"], stream=sys.stderr)
+                    keyring.set_password("op5-cli", config["op5_username"], password)
+                    config["op5_password"] = password
+            else:
+                config["op5_password"] = getpass.getpass("Enter password for user %s: " % config["op5_username"], stream=sys.stderr)
     except Exception as e:
         import pprint; pprint.pprint(e)
         return 1
