@@ -52,7 +52,7 @@ Yeah, as you said, that is on purpose. That happens when OP5 has an internal err
 
 - I don't want to store my password under .config/op5/config.yaml, what can I do?
 
-You could just delete the line starting with "op5_password:" in that file; and you will be prompted every time for a password instead.
+You could just delete the line starting with "op5_password:" in that file; and you will be prompted for a password to save in your keyring instead (requires python-keyring installed).
 
 Contributing
 ------------
