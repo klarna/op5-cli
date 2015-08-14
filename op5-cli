@@ -83,7 +83,7 @@ def read_config_file():
         config_file = default_cfg_file
     # else create the default config path and create an example config here
     else:
-        example_cfg = {'op5_url':'https://demo.op5.com/api', 'op5_username':'demo@op5.com', 'op5_password':'MonitorDemo123'}
+        example_cfg = {'op5_url':'https://demo.op5.com/api', 'op5_username':'demo@op5.com', 'op5_password':'MonitorDemo123', '#READANDREMOVEME': 'Remove the definition of op5_password in this file to prompt for a password to store in your keyring instead'}
         if not os.path.isdir(default_cfg_dir):
             os.makedirs(default_cfg_dir)
         stream = file(default_cfg_file+".example", 'w')
