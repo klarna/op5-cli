@@ -76,7 +76,7 @@ def commit_changes(args):
         print json.dumps(op5.data, sort_keys=True, indent=4)
 
 def read_config_file():
-    default_cfg_dir = "%s/.config/op5" % os.path.expanduser("~")
+    default_cfg_dir = "%s/.config/op5-cli" % os.path.expanduser("~")
     default_cfg_file = "%s/config.yaml" % default_cfg_dir
 
     if os.path.isfile(default_cfg_file):
@@ -98,7 +98,7 @@ def read_config_file():
         config = yaml.load(file(config_file))
     except IOError:
         print 'Unable to open config file.  The path for the ' \
-              'config file is ~/.config/op5/config.yaml.'
+              'config file is ~/.config/op5-cli/config.yaml.'
         sys.exit(1)
     except Exception:
         print 'Unable to read config file.  YAML syntax issue, perhaps?'
