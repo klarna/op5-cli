@@ -18,6 +18,7 @@ setup(
         "PyYAML>=3.11",
         "argparse>=1.2.1",
         "requests>=2.3.0",
-        "termcolor>=1.1.0"
+        "termcolor>=1.1.0",
+        "keyring>=5.4"
     ],
 )
