@@ -54,6 +54,10 @@ Yeah, as you said, that is on purpose. That happens when OP5 has an internal err
 
 You could just delete the line starting with "op5_password:" in that file; and you will be prompted for a password to save in your keyring instead (requires python-keyring installed).
 
+- Can I fetch the password from pass password manager instead?
+
+Yup. see https://confluence.internal.machines/display/teamitopsmw/passkeyring+backend and https://stash.int.klarna.net/projects/OPSMON/repos/passkeyring/browse. Install passkeyring, set it as the default keyring, and you are all set.
+
 Contributing
 ------------
 Pull requests, bug reports, and feature requests are extremely welcome.
