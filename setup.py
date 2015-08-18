@@ -1,3 +1,10 @@
+import os
+curdir = os.getcwd()
+
+from op5lib import setup
+
+os.chdir(curdir)
+
 try:
     from setuptools import setup
 except ImportError:
@@ -8,7 +15,6 @@ setup(
     version='0.1',
     author='Ozan Safi',
     author_email='ozansafi@gmail.com',
-    packages = ['op5lib'],
     scripts=['op5-cli'],
     url='https://github.com/ozans/op5-cli',
     license='LICENSE.txt',
