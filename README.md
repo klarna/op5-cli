@@ -11,12 +11,20 @@ python setup.py install
 
 How to run
 ----------
+- Config API
+
  `$ op5-cli <action_type> <object_type> [<name>] [--data <data>] [--dryrun] [--debug]`
+
+- Filter API
+
+ `$ op5-cli query/querycount <query> [--dryrun] [--debug]`
 
 The program will output (only) valid JSON data on success; making it easy for the output to be piped into external tools (e.g. JSON parsers like jq) to be processed further.
 
 Examples
 ----------
+- Config API
+
  `$ op5-cli read host <host_name>`
 
  `$ op5-cli read hostgroup <hostgroup_name>`
@@ -37,10 +45,16 @@ Examples
 
  `$ op5-cli overwrite service "<host_name>|<hostgroup_name>;<service_description>" --data "$(<example_data/passive_service_data)"`
 
+- Filter API
+
+  `$ op5-cli query '[hosts] contact_groups >= "itops.mw-services"'`
+
+  `$ op5-cli querycount '[services] contact_groups >= "itops.mw-services"'`
+
 FAQ
 ---
 
-- I get an "ImportError: No module named op5lib.op5" when I try to run the application
+- I get an "ImportError: No module named op5" when I try to run the application
 
 You didn't fetch the submodule which contains the library.
 
