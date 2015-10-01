@@ -40,6 +40,12 @@ def querycount(args):
     else:
         print json.dumps(op5.data, sort_keys=True, indent=4)
 
+def command(args):
+    if not op5.command(args.command_type, args.json_data):
+        return op5.status_code - 300 if op5.status_code >= 400 else 1
+    else:
+        print json.dumps(op5.data, sort_keys=True, indent=4)
+
 def read(args):
     if not op5.read(args.object_type, args.object_name):
         return op5.status_code - 300 if op5.status_code >= 400 else 1
@@ -131,9 +137,12 @@ def main():
     subparsers = parser.add_subparsers()
 
     valid_object_types = ["host", "hostgroup", "service", "servicegroup", "contact", "contactgroup", "host_template", "service_template", "contact_template", "hostdependency", "servicedependency", "hostescalation", "serviceescalation", "user", "usergroup", "combined_graph", "graph_collection", "graph_template", "management_pack", "timeperiod"]
+    valid_command_types = ["ACKNOWLEDGE_HOST_PROBLEM","ACKNOWLEDGE_SVC_PROBLEM","PROCESS_HOST_CHECK_RESULT","PROCESS_SERVICE_CHECK_RESULT","SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME","SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME","SCHEDULE_HOST_CHECK","SCHEDULE_HOST_DOWNTIME","SCHEDULE_SVC_CHECK","SCHEDULE_SVC_DOWNTIME"]
 
     parser_query = subparsers.add_parser('query')
     parser_querycount = subparsers.add_parser('querycount')
+    parser_command = subparsers.add_parser('command')
+
     parser_create = subparsers.add_parser('create')
     parser_read = subparsers.add_parser('read')
     parser_update = subparsers.add_parser('update')
@@ -142,15 +151,19 @@ def main():
 
     for sp in [parser_query,parser_querycount]:
         sp.add_argument('query', action='store', help='Query string')
+    for sp in [parser_command]:
+        sp.add_argument('command_type', action='store', choices=valid_command_types, help='Command type')
     for sp in [parser_create, parser_read, parser_update, parser_delete, parser_overwrite]:
         sp.add_argument('object_type', action='store', choices=valid_object_types, help='Object type')
     for sp in [parser_read, parser_update, parser_delete, parser_overwrite]:
         sp.add_argument('object_name', action='store', help='Object name')
-    for sp in [parser_create, parser_update, parser_overwrite]:
+    for sp in [parser_create, parser_update, parser_overwrite, parser_command]:
         sp.add_argument('--data', dest='json_data', action='store', type=ast.literal_eval, required=True, help='Data to be sent in HTTP body in JSON format')
 
     parser_query.set_defaults(func=query)
     parser_querycount.set_defaults(func=querycount)
+    parser_command.set_defaults(func=command)
+
     parser_create.set_defaults(func=create)
     parser_read.set_defaults(func=read)
     parser_update.set_defaults(func=update)
@@ -166,7 +179,7 @@ def main():
     parser_commitchanges = subparsers.add_parser('commit-changes')
     parser_commitchanges.set_defaults(func=commit_changes)
 
-    subparsers = [parser_create, parser_read, parser_update, parser_delete, parser_overwrite, parser_query, parser_querycount, parser_getchanges, parser_undochanges, parser_commitchanges]
+    subparsers = [parser_create, parser_read, parser_update, parser_delete, parser_overwrite, parser_query, parser_querycount, parser_command, parser_getchanges, parser_undochanges, parser_commitchanges]
     for sp in subparsers:
         sp.add_argument('--dryrun', dest='dryrun', action='store_true', default=False, help='If set, no create/update/delete/overwrite will be performed on the OP5 server')
         sp.add_argument('--debug', dest='debug', action='store_true', help='If set, output more text')
