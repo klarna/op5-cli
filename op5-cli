@@ -28,6 +28,12 @@ logger.addHandler(fh)
 #the system exit codes are up to 255, so I can't use the full range of HTTP status codes as exit codes
 #but I can still return something indicative of the HTTP status code received
 
+def report(args):
+    if not op5.report(args.query):
+        return op5.status_code - 300 if op5.status_code >= 400 else 1
+    else:
+        print json.dumps(op5.data, sort_keys=True, indent=4)
+
 def query(args):
     if not op5.filter("query", args.query):
         return op5.status_code - 300 if op5.status_code >= 400 else 1
@@ -141,6 +147,7 @@ def main():
 
     parser_query = subparsers.add_parser('query')
     parser_querycount = subparsers.add_parser('querycount')
+    parser_report= subparsers.add_parser('report')
     parser_command = subparsers.add_parser('command')
 
     parser_create = subparsers.add_parser('create')
@@ -149,7 +156,7 @@ def main():
     parser_delete = subparsers.add_parser('delete')
     parser_overwrite = subparsers.add_parser('overwrite')
 
-    for sp in [parser_query,parser_querycount]:
+    for sp in [parser_query,parser_querycount,parser_report]:
         sp.add_argument('query', action='store', help='Query string')
     for sp in [parser_command]:
         sp.add_argument('command_type', action='store', choices=valid_command_types, help='Command type')
@@ -162,6 +169,7 @@ def main():
 
     parser_query.set_defaults(func=query)
     parser_querycount.set_defaults(func=querycount)
+    parser_report.set_defaults(func=report)
     parser_command.set_defaults(func=command)
 
     parser_create.set_defaults(func=create)
@@ -179,7 +187,7 @@ def main():
     parser_commitchanges = subparsers.add_parser('commit-changes')
     parser_commitchanges.set_defaults(func=commit_changes)
 
-    subparsers = [parser_create, parser_read, parser_update, parser_delete, parser_overwrite, parser_query, parser_querycount, parser_command, parser_getchanges, parser_undochanges, parser_commitchanges]
+    subparsers = [parser_create, parser_read, parser_update, parser_delete, parser_overwrite, parser_query, parser_querycount, parser_report, parser_command, parser_getchanges, parser_undochanges, parser_commitchanges]
     for sp in subparsers:
         sp.add_argument('--dryrun', dest='dryrun', action='store_true', default=False, help='If set, no create/update/delete/overwrite will be performed on the OP5 server')
         sp.add_argument('--debug', dest='debug', action='store_true', help='If set, output more text')
