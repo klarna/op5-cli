@@ -17,7 +17,37 @@ How to run
 
 - Filter API
 
- `$ op5-cli query/querycount <query> [--dryrun] [--debug]`
+ `$ op5-cli query/querycount <a query in Livestatus Query Language(LQL)> [--dryrun] [--debug]`
+
+- Report API
+
+ `$ op5-cli report <querystring> [--dryrun] [--debug]`
+
+- Command API
+
+ `$ op5-cli command <command> --data <data> [--dryrun] [--debug]`
+
+  Available commands are:
+
+  * ACKNOWLEDGE_HOST_PROBLEM
+
+  * ACKNOWLEDGE_SVC_PROBLEM
+
+  * PROCESS_HOST_CHECK_RESULT
+
+  * PROCESS_SERVICE_CHECK_RESULT
+
+  * SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME
+
+  * SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME
+
+  * SCHEDULE_HOST_CHECK
+
+  * SCHEDULE_HOST_DOWNTIME
+
+  * SCHEDULE_SVC_CHECK
+
+  * SCHEDULE_SVC_DOWNTIME
 
 The program will output (only) valid JSON data on success; making it easy for the output to be piped into external tools (e.g. JSON parsers like jq) to be processed further.
 
@@ -51,6 +81,22 @@ Examples
 
   `$ op5-cli querycount '[services] contact_groups >= "itops.mw-services"'`
 
+  For operation query, (and not querycount) you may specify the parameters columns, limit, offset, and sort; as specified on: https://monitor.int.klarna.net/api/help/filter/query
+
+  `$ op5-cli query '[services] contact_groups >= "itops-sms"&columns=state,acknowledged,has_been_checked&limit=100&sort=state'`
+
+- Report API
+
+  You may use the parameters available for the report API as specified on: https://monitor.int.klarna.net/api/help/report/event
+
+  `$ op5-cli report "report_period=last24hours&limit=2"`
+
+- Command API
+
+  You need to specify the parameters needed for each command type as specified on https://monitor.int.klarna.net/api/help/command/<command>
+
+  `$ op5-cli command SCHEDULE_SVC_CHECK --data '{"host_name":"monitor-prod-tcs1.internal.machines","service_description":"Merlin Node Status","check_time":"2015-10-01 17:19:40"}'`
+
 FAQ
 ---
 
@@ -68,7 +114,7 @@ Yeah, as you said, that is on purpose. That happens when OP5 has an internal err
 
 You could just delete the line starting with "op5_password:" in that file; and you will be prompted for a password to save in your keyring instead (requires python-keyring installed).
 
-- Can I fetch the password from pass password manager instead?
+- Can I fetch the password from the pass password manager instead?
 
 Yup. see https://confluence.internal.machines/display/teamitopsmw/passkeyring+backend and https://stash.int.klarna.net/projects/OPSMON/repos/passkeyring/browse. Install passkeyring, set it as the default keyring, and you are all set.
 
