@@ -1,3 +1,4 @@
+import site
 import os
 curdir = os.getcwd()
 
@@ -16,6 +17,7 @@ setup(
     author='Ozan Safi',
     author_email='ozansafi@gmail.com',
     scripts=['op5-cli'],
+    data_files=[(site.getuserbase()+"/man/man1/", ['man/op5-cli.1'])],
     url='https://github.com/ozans/op5-cli',
     license='LICENSE.txt',
     description='A command-line interface for the OP5 monitoring system',

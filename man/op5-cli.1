@@ -1,0 +1,167 @@
+.TH man 8 "26 November 2015" "1.0" "op5-cli man page"
+.SH NAME
+.B op5-cli
+\- administer OP5 through the command-line
+.SH DESCRIPTION
+A command-line interface for the OP5 monitoring system using its REST API
+.SH SYNOPSIS
+.B op5-cli
+[create,read,update,delete,overwrite,
+.br
+         get-changes,undo-changes,commit-changes,
+.br
+         query,querycount,report,command]
+.TP
+> Config API
+$ op5-cli <action_type> <object_type> [<name>] [--data <data>] [--dryrun] [--debug]
+.TP
+> Filter API
+$ op5-cli query/querycount <a query in Livestatus Query Language(LQL)> [--dryrun] [--debug]
+.TP
+> Report API
+$ op5-cli report <querystring> [--dryrun] [--debug]
+.TP
+> Command API
+$ op5-cli command <command> --data <data> [--dryrun] [--debug]
+.TP
+* Available commands are:
+ACKNOWLEDGE_HOST_PROBLEM
+.br
+ACKNOWLEDGE_SVC_PROBLEM
+.br
+PROCESS_HOST_CHECK_RESULT
+.br
+PROCESS_SERVICE_CHECK_RESULT
+.br
+SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME
+.br
+SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME
+.br
+SCHEDULE_HOST_CHECK
+.br
+SCHEDULE_HOST_DOWNTIME
+.br
+SCHEDULE_SVC_CHECK
+.br
+SCHEDULE_SVC_DOWNTIME
+.LP
+The program will output (only) valid JSON data on success; making it easy for the output to be piped into
+.br
+external tools (e.g. JSON parsers like jq) to be processed further.
+.SH OPTIONS
+.TP
+.B --dryrun
+If set, no create/update/delete/overwrite will be performed on the OP5 server
+.TP
+.B --debug
+If set, output more text
+.SH EXAMPLES
+.TP
+> Config API
+$ op5-cli read host <host_name>
+.br
+$ op5-cli read hostgroup <hostgroup_name>
+.br
+$ op5-cli read hostgroup "" #use an empty name to list all objects of the given object type
+.br
+$ op5-cli read service "<host_name>|<hostgroup_name>;<service_description>"
+.br
+$ op5-cli create host --data "$(<example_data/host_data)"
+.br
+$ op5-cli update host <host_name> --data "$(<example_data/passive_host_data)"
+.br
+$ op5-cli create host --data '{"host_name":"test"}'
+.br
+$ op5-cli delete host test
+.br
+$ op5-cli create service --data "$(<example_data/service_data)"
+.br
+$ op5-cli overwrite service "<host_name>|<hostgroup_name>;<service_description>" \\
+.br
+                            --data "$(<example_data/passive_service_data)"
+.br
+
+.br
+For more information about the properties you can specify for each object, please see:
+.br
+https://monitor.int.klarna.net/api/help/config [1]
+.TP
+> Filter API
+$ op5-cli query '[hosts] contact_groups >= "itops.mw-services"'
+.br
+$ op5-cli querycount '[services] contact_groups >= "itops.mw-services"'
+.br
+
+.br
+For operation query, you may specify the parameters columns, limit, offset, and sort; as specified on:
+.br
+https://monitor.int.klarna.net/api/help/filter/query [2]
+.br
+
+.br
+$ op5-cli query '[services] contact_groups >= "itops-sms"&columns=state,acknowledged,has_been_checked
+.br
+                            &limit=100&sort=state'
+.TP
+> Report API
+You may use the parameters available for the report API as specified on:
+.br
+https://monitor.int.klarna.net/api/help/report/event [3]
+.br
+
+.br
+$ op5-cli report "report_period=last24hours&limit=2"
+.TP
+> Command API
+You need to specify the parameters needed for each command type as specified on:
+.br
+https://monitor.int.klarna.net/api/help/command [4]
+.br
+
+.br
+$ op5-cli command SCHEDULE_SVC_CHECK --data '{"host_name":"monitor-prod-tcs1.internal.machines",
+.br
+"service_description":"Merlin Node Status","check_time":"2015-10-01 17:19:40"}'
+.SH FAQ
+.TP
+Q: I don't want to store my password under .config/op5/config.yaml, what can I do?
+You could just delete the line starting with "op5_password:" in that file; and you will be prompted for
+.br
+a password to save in your keyring instead (requires python-keyring installed).
+.TP
+Q: Can I fetch the password from the pass password manager instead?
+Yup. see https://confluence.internal.machines/display/teamopsmon/passkeyring+backend and
+.br
+https://stash.int.klarna.net/projects/OPSMON/repos/passkeyring/browse. Install passkeyring, set it as
+.br
+the default keyring, and you are all set.
+.SH SEE ALSO
+.SS API DOCUMENTATION
+.TP
+Config API
+[1] https://monitor.int.klarna.net/api/help/config
+.TP
+Filter API
+[2] https://monitor.int.klarna.net/api/help/filter/query
+.TP
+Report API
+[3] https://monitor.int.klarna.net/api/help/report/event
+.TP
+Command API
+[4] https://monitor.int.klarna.net/api/help/command
+.SH EXIT STATUS
+Since the system codes are only up to 255, the full range of HTTP status codes can't be used as exit codes.
+.br
+But one can still return something indicative of the HTTP status code received.
+.LP
+The exit status of the program is the HTTP status code received minus 300.
+.br
+e.g. An HTTP status code of 401 would return 101 as the exit status code.
+.LP
+In case there is an internal problem in the program, it would instead return 1.
+.SH BUGS
+No known bugs.
+.SH CONTRIBUTING
+Pull requests, bug reports, and feature requests are extremely welcome.
+.SH AUTHOR
+Ozan Safi (ozansafi@gmail.com)
