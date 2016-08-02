@@ -170,7 +170,7 @@ def main():
     for sp in [parser_read, parser_update, parser_delete, parser_overwrite]:
         sp.add_argument('object_name', action='store', help='Object name')
     for sp in [parser_create, parser_update, parser_overwrite, parser_command]:
-        sp.add_argument('--data', dest='json_data', action='store', type=ast.literal_eval, required=True, help='Data to be sent in HTTP body in JSON format')
+        sp.add_argument('--data', dest='json_data', action='store', type=str, required=True, help='Data to be sent in HTTP body in JSON format')
 
     parser_query.set_defaults(func=query)
     parser_querycount.set_defaults(func=querycount)
@@ -206,6 +206,8 @@ def main():
 
     try:
         args, unknown = parser.parse_known_args()
+        if "json_data" in args:
+            args.json_data=json.loads(args.json_data) #convert given string to JSON
         if not "op5_password" in config.keys():
             if "keyring" in sys.modules:
                 password = keyring.get_password("op5-cli", config["op5_username"])
