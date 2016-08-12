@@ -13,7 +13,7 @@ except ImportError:
 
 setup(
     name='op5-cli',
-    version='0.1',
+    version='1.0',
     author='Ozan Safi',
     author_email='ozansafi@gmail.com',
     scripts=['op5-cli'],
