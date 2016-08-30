@@ -9,7 +9,7 @@ setup(
     name='op5-cli',
     version='1.0.4',
     author='Ozan Safi',
-    author_email='ozansafi@gmail.com',
+    author_email='ozan.safi@klarna.com',
     scripts=['op5-cli'],
     data_files=[(site.getuserbase()+"/man/man1/", ['man/op5-cli.1'])],
     url='https://github.com/klarna/op5-cli',

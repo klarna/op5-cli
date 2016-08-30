@@ -81,42 +81,36 @@ Examples
 
   `$ op5-cli querycount '[services] contact_groups >= "itops.mw-services"'`
 
-  For operation query, (and not querycount) you may specify the parameters columns, limit, offset, and sort; as specified on: https://monitor.int.klarna.net/api/help/filter/query
+  For operation query, (and not querycount) you may specify the parameters columns, limit, offset, and sort; as specified on: https://monitor/api/help/filter/query
 
   `$ op5-cli query '[services] contact_groups >= "itops-sms"&columns=state,acknowledged,has_been_checked&limit=100&sort=state'`
 
 - Report API
 
-  You may use the parameters available for the report API as specified on: https://monitor.int.klarna.net/api/help/report/event
+  You may use the parameters available for the report API as specified on: https://monitor/api/help/report/event
 
   `$ op5-cli report "report_period=last24hours&limit=2"`
 
 - Command API
 
-  You need to specify the parameters needed for each command type as specified on https://monitor.int.klarna.net/api/help/command/<command>
+  You need to specify the parameters needed for each command type as specified on https://monitor/api/help/command/<command>
 
-  `$ op5-cli command SCHEDULE_SVC_CHECK --data '{"host_name":"monitor-prod-tcs1.internal.machines","service_description":"Merlin Node Status","check_time":"2015-10-01 17:19:40"}'`
+  `$ op5-cli command SCHEDULE_SVC_CHECK --data '{"host_name":"monitor.internal.machines","service_description":"Merlin Node Status","check_time":"2015-10-01 17:19:40"}'`
 
 FAQ
 ---
-
-- I get an "ImportError: No module named op5" when I try to run the application
-
-You didn't fetch the submodule which contains the library.
-
-$ git submodule update --init
 
 - The app (or rather the library that the app uses) raises an exception on purpose sometimes and does not catch it, making the execution fail.
 
 Yeah, as you said, that is on purpose. That happens when OP5 has an internal error and it is better to fix that problem first than to let the execution continue.
 
-- I don't want to store my password under .config/op5/config.yaml, what can I do?
+- I don't want to store my password under ~/.config/op5/config.yaml, what can I do?
 
 You could just delete the line starting with "op5_password:" in that file; and you will be prompted for a password to save in your keyring instead (requires python-keyring installed).
 
 - Can I fetch the password from the pass password manager instead?
 
-Yup. see https://confluence.internal.machines/display/teamitopsmw/passkeyring+backend and https://stash.int.klarna.net/projects/OPSMON/repos/passkeyring/browse. Install passkeyring, set it as the default keyring, and you are all set.
+Yup. Install passkeyring, set it as the default keyring, and you are all set.
 
 Contributing
 ------------
