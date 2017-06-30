@@ -112,6 +112,14 @@ You could just delete the line starting with "op5_password:" in that file; and y
 
 Yup. Install passkeyring, set it as the default keyring, and you are all set.
 
+- I get the error SSLError(SSLError(SSLError(1, u'[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:661)'),),)
+
+The TLS certificate of the OP5 server you are accessing has been signed by a non-default CA. Python's requests module which is utilized within op5-cli maintains a list of trusted CAs in a file separate from the operating system's default list of trusted CAs.
+
+You need to therefore append your CA's certificate to the file that is outputted when running
+
+$ python -c "import requests; print requests.certs.where()"
+
 Contributing
 ------------
 Pull requests, bug reports, and feature requests are extremely welcome.
