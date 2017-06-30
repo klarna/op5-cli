@@ -131,6 +131,16 @@ a password to save in your keyring instead (requires python-keyring installed).
 .TP
 Q: Can I fetch the password from the pass password manager instead?
 Yup. Install passkeyring, set it as the default keyring, and you are all set.
+.TP
+Q: I get the error SSLError(SSLError(SSLError(1, u'[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:661)'),),)
+.br
+The TLS certificate of the OP5 server you are accessing has been signed by a non-default CA. Python's
+.br
+requests module which is utilized within op5-cli maintains a list of trusted CAs in a file separate
+.br
+from the operating system's default list of trusted CAs. You need to therefore append your CA's certificate
+.br
+to the file that is outputted when running $ python -c "import requests; print requests.certs.where()"
 .SH SEE ALSO
 .SS API DOCUMENTATION
 .TP
